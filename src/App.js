@@ -3,8 +3,13 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
-const UserDetails = ({ user }) => {
-  return <h3>{`${user.name} logged in`}</h3>;
+const UserDetails = ({ user, onLogout }) => {
+  return (
+    <div>
+      <h3>{`${user.name} logged in`}</h3>
+      <button onClick={onLogout}>Logout</button>
+    </div>
+  );
 };
 
 const App = () => {
@@ -17,12 +22,23 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
+    }
+  }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
       console.log("user: ", user);
       setUser(user);
+      blogService.setToken(user.token);
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
     } catch (error) {
@@ -68,11 +84,17 @@ const App = () => {
     );
   };
 
+  const clearLocalStorageAndUser = () => {
+    blogService.setToken(null);
+    window.localStorage.removeItem("loggedBlogappUser");
+    setUser(null);
+  };
+
   return (
     <div>
       {user ? (
         <div>
-          <UserDetails user={user} />
+          <UserDetails user={user} onLogout={clearLocalStorageAndUser} />
           {blogForm()}
         </div>
       ) : (
