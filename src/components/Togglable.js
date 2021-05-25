@@ -3,10 +3,10 @@ import React, { useState } from "react";
 const Togglable = ({
   showFormBtnText,
   hideFormBtnText = "cancel",
-  showActionButton,
-  setActionButton,
   children,
 }) => {
+  const [showActionButton, setActionButton] = useState(true);
+
   return (
     <div>
       {showActionButton ? (

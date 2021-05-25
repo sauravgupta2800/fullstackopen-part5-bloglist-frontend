@@ -20,7 +20,6 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [formFields, setFormFields] = useState({});
-  const [showFormActionButton, setFormActionButton] = useState(true);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -105,7 +104,6 @@ const App = () => {
       const params = { ...formFields, userId: user.userId, likes: 0 };
       const data = await blogService.create(params);
       console.log(data);
-      setFormActionButton(true);
       blogService.getAll().then((blogs) => setBlogs(blogs));
     } catch (error) {
       console.log("error: ", error);
@@ -117,11 +115,7 @@ const App = () => {
       {user ? (
         <div>
           <UserDetails user={user} onLogout={clearLocalStorageAndUser} />
-          <Togglable
-            showFormBtnText={"New Note"}
-            showActionButton={showFormActionButton}
-            setActionButton={(value) => setFormActionButton(value)}
-          >
+          <Togglable showFormBtnText={"New Note"}>
             <CreateBlogForm
               fields={formFields}
               onFieldChange={onFieldChange}
