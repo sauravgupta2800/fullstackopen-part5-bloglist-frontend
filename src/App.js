@@ -83,7 +83,7 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} onLikeClick={updateBlog} />
         ))}
       </div>
     );
@@ -110,6 +110,23 @@ const App = () => {
       blogService.getAll().then((blogs) => setBlogs(blogs));
     } catch (error) {
       console.log("error: ", error);
+    }
+  };
+
+  const updateBlogs = (blog) => {
+    let updatedBlogs = blogs.map((singleBlog)=>{
+      if(singleBlog.id===blog.id) return blog;
+      return singleBlog;
+    })
+    setBlogs(updatedBlogs);
+  }
+
+  const updateBlog = async (id, newObect) => {
+    try {
+      const data = await blogService.update(id, newObect);
+      updateBlogs(data);
+    } catch (e) {
+      //
     }
   };
 
