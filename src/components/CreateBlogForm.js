@@ -1,3 +1,5 @@
+import React from 'react'
+
 const CreateBlogForm = ({ fields, onFieldChange, onCreate }) => {
   return (
     <form onSubmit={onCreate}>
@@ -5,32 +7,32 @@ const CreateBlogForm = ({ fields, onFieldChange, onCreate }) => {
         title
         <input
           type="text"
-          value={fields.title || ""}
+          value={fields.title || ''}
           name="title"
-          onChange={({ target }) => onFieldChange("title", target.value)}
+          onChange={({ target }) => onFieldChange('title', target.value)}
         />
       </div>
       <div>
         Author
         <input
           type="text"
-          value={fields.author || ""}
+          value={fields.author || ''}
           name="Author"
-          onChange={({ target }) => onFieldChange("author", target.value)}
+          onChange={({ target }) => onFieldChange('author', target.value)}
         />
       </div>
       <div>
         Url
         <input
           type="text"
-          value={fields.url || ""}
+          value={fields.url || ''}
           name="Url"
-          onChange={({ target }) => onFieldChange("url", target.value)}
+          onChange={({ target }) => onFieldChange('url', target.value)}
         />
       </div>
       <button type="submit">Create</button>
     </form>
-  );
-};
+  )
+}
 
-export default CreateBlogForm;
+export default CreateBlogForm

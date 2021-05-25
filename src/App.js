@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import CreateBlogForm from "./components/CreateBlogForm";
-import Togglable from "./components/Togglable";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+import React, { useState, useEffect, useRef } from 'react'
+import Blog from './components/Blog'
+import CreateBlogForm from './components/CreateBlogForm'
+import Togglable from './components/Togglable'
+import blogService from './services/blogs'
+import loginService from './services/login'
 
 const UserDetails = ({ user, onLogout }) => {
   return (
@@ -11,45 +11,45 @@ const UserDetails = ({ user, onLogout }) => {
       <h3>{`${user.name} logged in`}</h3>
       <button onClick={onLogout}>Logout</button>
     </div>
-  );
-};
+  )
+}
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-  const [formFields, setFormFields] = useState({});
+  const [blogs, setBlogs] = useState([])
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
+  const [formFields, setFormFields] = useState({})
 
-  const blogFormTogglableRef = useRef();
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  const blogFormTogglableRef = useRef()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
+  }, [])
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      const user = await loginService.login({ username, password });
-      console.log("user: ", user);
-      setUser(user);
-      blogService.setToken(user.token);
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      setUsername("");
-      setPassword("");
+      const user = await loginService.login({ username, password })
+      console.log('user: ', user)
+      setUser(user)
+      blogService.setToken(user.token)
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      setUsername('')
+      setPassword('')
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error)
     }
-  };
+  }
 
   const loginForm = () => {
     return (
@@ -75,14 +75,14 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
-    );
-  };
+    )
+  }
 
   const blogList = () => {
     const sortedBlogs = [...blogs].sort((e1, e2) => {
-      return e1.likes > e2.likes ? -1 : 1;
-    });
-    console.log(sortedBlogs.map((blog) => blog.likes));
+      return e1.likes > e2.likes ? -1 : 1
+    })
+    console.log(sortedBlogs.map((blog) => blog.likes))
     return (
       <div>
         <h2>blogs</h2>
@@ -96,61 +96,61 @@ const App = () => {
           />
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   const clearLocalStorageAndUser = () => {
-    blogService.setToken(null);
-    window.localStorage.removeItem("loggedBlogappUser");
-    setUser(null);
-  };
+    blogService.setToken(null)
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+  }
 
   const onFieldChange = (fieldName, fieldValue) => {
-    const updatedFields = { ...formFields, [fieldName]: fieldValue };
-    setFormFields(updatedFields);
-  };
+    const updatedFields = { ...formFields, [fieldName]: fieldValue }
+    setFormFields(updatedFields)
+  }
 
   const onCreateclick = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      const params = { ...formFields, userId: user.userId, likes: 0 };
-      const data = await blogService.create(params);
-      console.log(data);
-      blogFormTogglableRef.current.toggleValue();
-      blogService.getAll().then((blogs) => setBlogs(blogs));
+      const params = { ...formFields, userId: user.userId, likes: 0 }
+      const data = await blogService.create(params)
+      console.log(data)
+      blogFormTogglableRef.current.toggleValue()
+      blogService.getAll().then((blogs) => setBlogs(blogs))
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error)
     }
-  };
+  }
 
   const updateBlogs = (blog) => {
     let updatedBlogs = blogs.map((singleBlog) => {
-      if (singleBlog.id === blog.id) return blog;
-      return singleBlog;
-    });
-    setBlogs(updatedBlogs);
-  };
+      if (singleBlog.id === blog.id) return blog
+      return singleBlog
+    })
+    setBlogs(updatedBlogs)
+  }
 
   const deleteBlog = async (id, newObect) => {
     try {
-      await blogService.remove(id, newObect);
+      await blogService.remove(id, newObect)
       let updatedBlogs = blogs.filter((singleBlog) => {
-        return singleBlog.id !== id;
-      });
-      setBlogs(updatedBlogs);
+        return singleBlog.id !== id
+      })
+      setBlogs(updatedBlogs)
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error)
     }
-  };
+  }
 
   const updateBlog = async (id, newObect) => {
     try {
-      const data = await blogService.update(id, newObect);
-      updateBlogs(data);
+      const data = await blogService.update(id, newObect)
+      updateBlogs(data)
     } catch (e) {
       //
     }
-  };
+  }
 
   return (
     <div>
@@ -158,7 +158,7 @@ const App = () => {
         <div>
           <UserDetails user={user} onLogout={clearLocalStorageAndUser} />
 
-          <Togglable showFormBtnText={"New Note"} ref={blogFormTogglableRef}>
+          <Togglable showFormBtnText={'New Note'} ref={blogFormTogglableRef}>
             <CreateBlogForm
               fields={formFields}
               onFieldChange={onFieldChange}
@@ -171,7 +171,7 @@ const App = () => {
         <div>{loginForm()}</div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
