@@ -1,5 +1,6 @@
-import React from "react";
-import Togglable from "../components/Togglable";
+import React from 'react'
+import Togglable from '../components/Togglable'
+import PropTypes from 'prop-types'
 
 const Blog = ({
   blog: { id, title, author, url, likes, user },
@@ -10,23 +11,23 @@ const Blog = ({
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   const onDeleteBtnClick = () => {
     if (window.confirm(`Do you really want to delete - ${title}`)) {
-      onDeleteClick(id, { userId: user.id });
+      onDeleteClick(id, { userId: user.id })
     }
-  };
+  }
 
   return (
     <div style={blogStyle}>
       {title} by {author}
       <Togglable
-        showFormBtnText={"Show Details"}
-        hideFormBtnText={"Hide Details"}
+        showFormBtnText={'Show Details'}
+        hideFormBtnText={'Hide Details'}
       >
         <div>
           <div>
@@ -54,12 +55,18 @@ const Blog = ({
               <button onClick={() => onDeleteBtnClick()}>Delete</button>
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </Togglable>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  isBlogOwner: PropTypes.bool.isRequired,
+  onLikeClick: PropTypes.func.isRequired,
+  onDeleteBtnClick: PropTypes.func.isRequired
+}
+export default Blog

@@ -1,18 +1,18 @@
-import React, { useState, useImperativeHandle } from "react";
-
+import React, { useState, useImperativeHandle } from 'react'
+import PropTypes from 'prop-types'
 const Togglable = React.forwardRef(
-  ({ showFormBtnText, hideFormBtnText = "cancel", children }, ref) => {
-    const [showActionButton, setActionButton] = useState(true);
+  ({ showFormBtnText, hideFormBtnText = 'cancel', children }, ref) => {
+    const [showActionButton, setActionButton] = useState(true)
 
     useImperativeHandle(ref, () => {
       return {
         toggleValue,
-      };
-    });
+      }
+    })
 
     const toggleValue = () => {
-      setActionButton(!showActionButton);
-    };
+      setActionButton(!showActionButton)
+    }
 
     return (
       <div>
@@ -31,8 +31,15 @@ const Togglable = React.forwardRef(
           </div>
         )}
       </div>
-    );
+    )
   }
-);
+)
 
-export default Togglable;
+Togglable.propTypes = {
+  showFormBtnText: PropTypes.string.isRequired
+}
+
+Togglable.displayName = 'Togglable'
+
+
+export default Togglable
