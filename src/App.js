@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import CreateBlogForm from "./components/CreateBlogForm";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -17,6 +19,8 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [formFields, setFormFields] = useState({});
+  const [showFormActionButton, setFormActionButton] = useState(true);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -73,7 +77,7 @@ const App = () => {
     );
   };
 
-  const blogForm = () => {
+  const blogList = () => {
     return (
       <div>
         <h2>blogs</h2>
@@ -90,12 +94,41 @@ const App = () => {
     setUser(null);
   };
 
+  const onFieldChange = (fieldName, fieldValue) => {
+    const updatedFields = { ...formFields, [fieldName]: fieldValue };
+    setFormFields(updatedFields);
+  };
+
+  const onCreateclick = async (event) => {
+    event.preventDefault();
+    try {
+      const params = { ...formFields, userId: user.userId, likes: 0 };
+      const data = await blogService.create(params);
+      console.log(data);
+      setFormActionButton(true);
+      blogService.getAll().then((blogs) => setBlogs(blogs));
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
   return (
     <div>
       {user ? (
         <div>
           <UserDetails user={user} onLogout={clearLocalStorageAndUser} />
-          {blogForm()}
+          <Togglable
+            showFormBtnText={"New Note"}
+            showActionButton={showFormActionButton}
+            setActionButton={(value) => setFormActionButton(value)}
+          >
+            <CreateBlogForm
+              fields={formFields}
+              onFieldChange={onFieldChange}
+              onCreate={onCreateclick}
+            />
+          </Togglable>
+          {blogList()}
         </div>
       ) : (
         <div>{loginForm()}</div>
