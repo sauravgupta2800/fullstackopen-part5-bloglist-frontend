@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import CreateBlogForm from "./components/CreateBlogForm";
 import Togglable from "./components/Togglable";
@@ -20,6 +20,8 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [formFields, setFormFields] = useState({});
+
+  const blogFormTogglableRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -104,6 +106,7 @@ const App = () => {
       const params = { ...formFields, userId: user.userId, likes: 0 };
       const data = await blogService.create(params);
       console.log(data);
+      blogFormTogglableRef.current.toggleValue();
       blogService.getAll().then((blogs) => setBlogs(blogs));
     } catch (error) {
       console.log("error: ", error);
@@ -115,7 +118,8 @@ const App = () => {
       {user ? (
         <div>
           <UserDetails user={user} onLogout={clearLocalStorageAndUser} />
-          <Togglable showFormBtnText={"New Note"}>
+
+          <Togglable showFormBtnText={"New Note"} ref={blogFormTogglableRef}>
             <CreateBlogForm
               fields={formFields}
               onFieldChange={onFieldChange}
