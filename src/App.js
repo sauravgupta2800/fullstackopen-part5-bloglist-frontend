@@ -79,10 +79,14 @@ const App = () => {
   };
 
   const blogList = () => {
+    const sortedBlogs = [...blogs].sort((e1, e2) => {
+      return e1.likes > e2.likes ? -1 : 1;
+    });
+    console.log(sortedBlogs.map((blog) => blog.likes));
     return (
       <div>
         <h2>blogs</h2>
-        {blogs.map((blog) => (
+        {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} onLikeClick={updateBlog} />
         ))}
       </div>
@@ -114,12 +118,12 @@ const App = () => {
   };
 
   const updateBlogs = (blog) => {
-    let updatedBlogs = blogs.map((singleBlog)=>{
-      if(singleBlog.id===blog.id) return blog;
+    let updatedBlogs = blogs.map((singleBlog) => {
+      if (singleBlog.id === blog.id) return blog;
       return singleBlog;
-    })
+    });
     setBlogs(updatedBlogs);
-  }
+  };
 
   const updateBlog = async (id, newObect) => {
     try {
