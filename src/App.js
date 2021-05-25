@@ -87,7 +87,7 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         {sortedBlogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} onLikeClick={updateBlog} />
+          <Blog key={blog.id} blog={blog} onLikeClick={updateBlog} onDeleteClick={deleteBlog}/>
         ))}
       </div>
     );
@@ -124,6 +124,18 @@ const App = () => {
     });
     setBlogs(updatedBlogs);
   };
+
+  const deleteBlog = async (id, newObect) => {
+    try {
+      await blogService.remove(id, newObect);
+      let updatedBlogs = blogs.filter((singleBlog) => {
+        return (singleBlog.id !== id) 
+      });
+      setBlogs(updatedBlogs);
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  }
 
   const updateBlog = async (id, newObect) => {
     try {

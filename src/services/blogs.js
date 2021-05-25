@@ -28,11 +28,14 @@ const update = async (id, newObject) => {
   return request.then((response) => response.data);
 };
 
-const remove = (id) => {
-  // const config = {
-  //   headers: { Authorization: token },
-  // };
-  const request = axios.delete(`${baseUrl}/${id}`);
+const remove = (id, newObect) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const request = axios.delete(`${baseUrl}/${id}`, {
+    ...config,
+    data: newObect,
+  });
   return request.then((response) => response.data);
 };
 

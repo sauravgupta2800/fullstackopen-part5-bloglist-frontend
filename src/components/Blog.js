@@ -1,7 +1,7 @@
 import React from "react";
 import Togglable from "../components/Togglable";
 
-const Blog = ({ blog: { id, title, author, url, likes }, onLikeClick }) => {
+const Blog = ({ blog: { id, title, author, url, likes, user }, onLikeClick, onDeleteClick }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -9,6 +9,12 @@ const Blog = ({ blog: { id, title, author, url, likes }, onLikeClick }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
+
+  const onDeleteBtnClick = () => {
+    if(window.confirm(`Do you really want to delete - ${title}`)){
+    onDeleteClick(id, { userId: user.id })
+    }
+  }
 
   return (
     <div style={blogStyle}>
@@ -35,6 +41,12 @@ const Blog = ({ blog: { id, title, author, url, likes }, onLikeClick }) => {
             <span>{likes}</span>
             <button onClick={() => onLikeClick(id, { likes: likes + 1 })}>
               likes
+            </button>
+          </div>
+          <div>
+            <span>Do you want to delete? </span>
+            <button onClick={() => onDeleteBtnClick()}>
+              Delete
             </button>
           </div>
         </div>
