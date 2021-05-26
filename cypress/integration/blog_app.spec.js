@@ -45,6 +45,10 @@ describe("Blog app", function () {
 
     it("A blog can be createdd", function () {
       cy.contains("New Note").click();
+      cy.get("#title").type("A blog title");
+      cy.get("#author").type("Apna bhai Saurav");
+      cy.get("#url").type("www.google.com");
+      cy.contains("Create").click();
     });
   });
 });
