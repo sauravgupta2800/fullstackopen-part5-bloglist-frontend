@@ -13,7 +13,7 @@ describe("Blog app", function () {
   });
 
   /**
-   * Implementation of Note creation
+   * Implementation of Blog creation
    */
   //   describe("when logged in", function () {
   //     beforeEach(function () {
@@ -30,7 +30,26 @@ describe("Blog app", function () {
   //   });
 
   /**
-   * Implementation of Note Like
+   * Implementation of Blog Like
+   */
+  //   describe("when logged in", function () {
+  //     beforeEach(function () {
+  //       cy.login({ username: "sauravgupta2800", password: "password" });
+  //       cy.createBlog({
+  //         title: "A blog title",
+  //         author: "Apna bhai Saurav",
+  //         url: "www.google.com",
+  //       });
+  //     });
+
+  //     it("A blog can be liked", function () {
+  //       cy.contains("Show Details").click();
+  //       cy.contains("likes").click();
+  //     });
+  //   });
+
+  /**
+   * Implementation of Blog Delete(check if it present then only delete)
    */
   describe("when logged in", function () {
     beforeEach(function () {
@@ -42,9 +61,11 @@ describe("Blog app", function () {
       });
     });
 
-    it("A blog can be liked", function () {
+    it("A blog can be deleted", function () {
       cy.contains("Show Details").click();
-      cy.contains("likes").click();
+      cy.contains("Delete").then((el) => {
+        el.click();
+      });
     });
   });
 });
