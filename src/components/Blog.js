@@ -66,7 +66,7 @@ const Blog = ({
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   isBlogOwner: PropTypes.bool.isRequired,
-  onLikeClick: PropTypes.func.isRequired,
-  onDeleteBtnClick: PropTypes.func.isRequired
+  onLikeClick: PropTypes.func,
+  onDeleteBtnClick: PropTypes.func
 }
 export default Blog
