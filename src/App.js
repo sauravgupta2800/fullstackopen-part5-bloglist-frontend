@@ -61,7 +61,7 @@ const App = () => {
             type="text"
             value={username}
             name="User Name"
-            id='username'
+            id="username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
@@ -71,11 +71,13 @@ const App = () => {
             type="password"
             value={password}
             name="Password"
-            id='password'
+            id="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit" id="login-button">login</button>
+        <button type="submit" id="login-button">
+          login
+        </button>
       </form>
     )
   }
@@ -92,7 +94,9 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
-            isBlogOwner={user && user.username === blog.user.username}
+            isBlogOwner={
+              user && blog && blog.user && user.username === blog.user.username
+            }
             onLikeClick={updateBlog}
             onDeleteClick={deleteBlog}
           />

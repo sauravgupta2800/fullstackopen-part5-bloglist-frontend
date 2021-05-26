@@ -1,20 +1,5 @@
-// blog_app.spec.js created with Cypress
-
-//
-
-// Start writing your Cypress tests below!
-
-// If you're unfamiliar with how Cypress works,
-
-// check out the link below and learn how to write your first test:
-
-// https://on.cypress.io/writing-first-test
-
 describe("Blog app", function () {
   beforeEach(function () {
-    /**
-     * Need to find a way to make async
-     */
     cy.request("POST", "http://localhost:3003/api/testing/reset").then(() => {
       const user = {
         name: "Saurav",
@@ -27,28 +12,39 @@ describe("Blog app", function () {
     });
   });
 
-//   it("User can log in", function () {
-//     cy.get("#username").type("sauravgupta2800");
-//     cy.get("#password").type("password");
-//     cy.get("#login-button").click();
-//     cy.contains("Saurav logged in");
-//   });
+  /**
+   * Implementation of Note creation
+   */
+  //   describe("when logged in", function () {
+  //     beforeEach(function () {
+  //       cy.login({ username: "sauravgupta2800", password: "password" });
+  //     });
 
+  //     it("A blog can be createdd", function () {
+  //       cy.createBlog({
+  //         title: "A blog title",
+  //         author: "Apna bhai Saurav",
+  //         url: "www.google.com",
+  //       });
+  //     });
+  //   });
+
+  /**
+   * Implementation of Note Like
+   */
   describe("when logged in", function () {
     beforeEach(function () {
-      //   cy.get("#username").type("sauravgupta2800");
-      //   cy.get("#password").type("password");
-      //   cy.get("#login-button").click();
-      //   cy.contains("Saurav logged in");
       cy.login({ username: "sauravgupta2800", password: "password" });
+      cy.createBlog({
+        title: "A blog title",
+        author: "Apna bhai Saurav",
+        url: "www.google.com",
+      });
     });
 
-    it("A blog can be createdd", function () {
-      cy.contains("New Note").click();
-      cy.get("#title").type("A blog title");
-      cy.get("#author").type("Apna bhai Saurav");
-      cy.get("#url").type("www.google.com");
-      cy.contains("Create").click();
+    it("A blog can be liked", function () {
+      cy.contains("Show Details").click();
+      cy.contains("likes").click();
     });
   });
 });
@@ -61,4 +57,12 @@ Cypress.Commands.add("login", ({ username, password }) => {
     localStorage.setItem("loggedBlogappUser", JSON.stringify(body));
     cy.visit("http://localhost:3000");
   });
+});
+
+Cypress.Commands.add("createBlog", ({ title, author, url }) => {
+  cy.contains("New Note").click();
+  cy.get("#title").type(title);
+  cy.get("#author").type(author);
+  cy.get("#url").type(url);
+  cy.contains("Create").click();
 });
